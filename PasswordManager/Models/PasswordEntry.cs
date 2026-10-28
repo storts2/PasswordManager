@@ -2,7 +2,7 @@
 
 namespace PasswordManager.Models;
 
-public class PasswordDetails
+public class PasswordEntry
 {
 
     [Key]

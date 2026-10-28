@@ -8,5 +8,5 @@ public class PWordDbContext : DbContext
 {
     public PWordDbContext(DbContextOptions<PWordDbContext> options) : base(options) { }
 
-    public DbSet<PasswordDetails> Passwords { get; set; }
+    public DbSet<PasswordEntry> Passwords { get; set; }
 }
