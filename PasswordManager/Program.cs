@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PasswordManager.PasswordDbContext;
+
 namespace PasswordManager;
 
 public class Program
@@ -8,6 +11,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddDbContext<PWordDbContext>(options
+            => options.UseSqlite(builder.Configuration
+            .GetConnectionString("PasswordDbString")));
 
         var app = builder.Build();
 
