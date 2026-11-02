@@ -5,7 +5,7 @@ namespace PasswordManager.Services;
 
 public interface IPasswordEntryServices
 {
-    public List<PasswordEntry> GetAllPassword();
+    public List<PasswordEntry> GetAllPasswords();
 
     public PasswordEntry GetPasswordEntryById(int id);
 

@@ -12,7 +12,7 @@ public class PasswordEntryService : IPasswordEntryServices
         _context = context;
     }
 
-    public List<PasswordEntry> GetAllPassword()
+    public List<PasswordEntry> GetAllPasswords()
     {
         return _context.Passwords.ToList();
     }
