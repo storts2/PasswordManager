@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.PasswordDbContext;
+using PasswordManager.Services;
 
 namespace PasswordManager;
 
@@ -15,6 +16,8 @@ public class Program
         builder.Services.AddDbContext<PWordDbContext>(options
             => options.UseSqlite(builder.Configuration
             .GetConnectionString("PasswordDbString")));
+
+        builder.Services.AddScoped<IPasswordEntryServices, PasswordEntryService>();
 
         var app = builder.Build();
 
