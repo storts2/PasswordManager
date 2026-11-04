@@ -11,7 +11,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<PWordDbContext>(options
             => options.UseSqlite(builder.Configuration
@@ -31,9 +31,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapStaticAssets();
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}")
+
+        app.MapRazorPages()
             .WithStaticAssets();
 
         app.Run();
