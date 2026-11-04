@@ -16,19 +16,22 @@ public class AddPasswordModel : PageModel
     }
 
     [BindProperty]
-    public PasswordEntry NewPassword { get; set; }
+    public PasswordEntry? NewPassword { get; set; }
 
 
     public string Message { get; set; } = "Password has not been created yet...";
     public void OnPostNew()
     {
-        if(!ModelState.IsValid)
+        if(!ModelState.IsValid || NewPassword is null)
         {
             Message = "Password input invalid, no password created";
         }
         else
         {
+            Message = "Password created, take a look in the vault";
             _passwordDatabase.AddPasswordEntry(NewPassword);
         }
+
+        NewPassword = null;
     }
 }
