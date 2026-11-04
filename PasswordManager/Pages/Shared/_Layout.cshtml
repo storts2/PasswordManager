@@ -32,18 +32,16 @@
                         </li>
                     </ul>
 
-                    <a class="btn btn-success btn-sm" asp-controller="Passwords" asp-action="Create">
+                    <a class="btn btn-success btn-sm" asp-page="/Password/AddPassword">
                         + Add Password
                     </a>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="d-flex flex-grow-1 justify-content-center align-items-center">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3 d-flex flex-grow-1">
+        @RenderBody()
+    </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

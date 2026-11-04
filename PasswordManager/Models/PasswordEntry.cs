@@ -12,6 +12,7 @@ public class PasswordEntry
     [StringLength(20, MinimumLength = 1)]
     public string? Company { get; set; }
 
+    [Required]
     [StringLength(20, MinimumLength = 1)]
     public string? Password { get; set; }
 }

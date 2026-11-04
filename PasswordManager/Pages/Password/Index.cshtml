@@ -1,36 +1,111 @@
 ﻿@page
 @model PasswordManager.Pages.Password.IndexModel
 
-<div class="d-flex flex-row">
-    <div class="flex-grow-1">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col" class="py-3 ps-4">Company</th>
-                    <th scope="col" class="py-3">Password</th>
-                    <th scope="col" class="py-3 text-end pe-4">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model.Passwords)
-                {
-                    <tr>
-                        <td class="fw-semibold ps-4">@p.Company</td>
-                        <td class="fw-semibold ps-4">@p.Password</td>
-                        <td class="text-end pe-4">
-                            <form method="post">
-                                <div>
-                                    <input asp-for="CurrentId" type="hidden" value="@p.Id" />
-                                </div>
-                                <button type="submit" class="btn btn-success btn-sm">Edit</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="flex-grow-1 border">
-        <p>HELLO</p>
+<div class="container-fluid p-4">
+    <div class="row g-4">
+
+        <!-- Password Table -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0 fw-semibold">Your Passwords</h5>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="py-3 ps-4">Company</th>
+                                <th class="py-3">Password</th>
+                                <th class="py-3 text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model.Passwords)
+                            {
+                                <tr>
+                                    <td class="fw-semibold ps-4">@p.Company</td>
+                                    <td class="text-muted">@p.Password</td>
+                                    <td class="text-end pe-4">
+                                        <form method="post" asp-page-handler="Set">
+                                            <input asp-for="CurrentPassword.Id"
+                                                   type="hidden" value="@p.Id" />
+                                            <input asp-for="CurrentPassword.Company"
+                                                   type="hidden" value="@p.Company" />
+
+                                            <button type="submit"
+                                                    class="btn btn-outline-success btn-sm">
+                                                Edit
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Password -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0 fw-semibold">Manage Password</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    @if (Model.CurrentPassword is null)
+                    {
+                        <p class="text-muted mb-0">@Model.Message</p>
+                    }
+                    else
+                    {
+                        <form method="post" asp-page-handler="Change">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Company</label>
+                                <input asp-for="CurrentPassword.Company"
+                                       value="@Model.CurrentPassword.Company"
+                                       class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">New Password</label>
+                                <input asp-for="CurrentPassword.Password"
+                                       class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Confirm New Password</label>
+                                <input asp-for="ConfirmPassword"
+                                       class="form-control" />
+                            </div>
+
+                            <input value="@Model.CurrentPassword.Id"
+                                   asp-for="CurrentPassword.Id"
+                                   type="hidden" />
+
+                            <button type="submit" class="btn btn-success w-100">
+                                Save Changes
+                            </button>
+                        </form>
+
+                        <hr class="my-4" />
+
+                        <form method="post" asp-page-handler="Delete">
+                            <input value="@Model.CurrentPassword.Id"
+                                   asp-for="CurrentPassword.Id"
+                                   type="hidden" />
+
+                            <button type="submit"
+                                    class="btn btn-outline-danger w-100">
+                                Delete Password
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

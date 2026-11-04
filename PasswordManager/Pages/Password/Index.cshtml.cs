@@ -18,10 +18,56 @@ public class IndexModel : PageModel
     public List<PasswordEntry> Passwords { get; set; }
 
     [BindProperty]
-    public int CurrentId { get; set; }
+    public PasswordEntry? CurrentPassword { get; set; }
+
+    [BindProperty]
+    public string? ConfirmPassword { get; set; }
+
+    public string? Message { get; set; } = "No Password Selected to Edit";
 
     public void OnGet()
     {
+        Passwords = _passwordDatabase.GetAllPasswords();
+    }
+
+    public void OnPostSet()
+    {
+        Passwords = _passwordDatabase.GetAllPasswords();
+    }
+
+    public void OnPostDelete()
+    {
+        if (CurrentPassword is null)
+        {
+            Message = "Did not delete, password was not deleted";
+        }
+        else
+        {
+            Message = "Password deleted, cannot recover";
+            _passwordDatabase.DeletePasswordEntry(CurrentPassword.Id);
+        }
+
+        CurrentPassword = null;
+        Passwords = _passwordDatabase.GetAllPasswords();
+    }
+
+    public void OnPostChange()
+    {
+        if(!ModelState.IsValid)
+        {
+            Message = "Invalid password entry, password did not change";
+        }
+        else if(CurrentPassword is null || CurrentPassword.Password != ConfirmPassword)
+        {
+            Message = "Password's did not match, did not change password";
+        }
+        else
+        {
+            Message = "Password Updated";
+            _passwordDatabase.UpdatePasswordEntry(CurrentPassword);
+        }
+
+        CurrentPassword = null;
         Passwords = _passwordDatabase.GetAllPasswords();
     }
 }

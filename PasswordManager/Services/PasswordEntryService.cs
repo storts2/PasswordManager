@@ -26,15 +26,18 @@ public class PasswordEntryService : IPasswordEntryServices
     {
         PasswordEntry pEntry = GetPasswordEntryById(id);
         _context.Passwords.Remove(pEntry);
+        _context.SaveChanges();
     }
 
     public void UpdatePasswordEntry(PasswordEntry pEntry)
     {
         _context.Passwords.Update(pEntry);
+        _context.SaveChanges();
     }
 
     public void AddPasswordEntry(PasswordEntry pEntry)
     {
         _context.Passwords.Add(pEntry);
+        _context.SaveChanges();
     }
 }
