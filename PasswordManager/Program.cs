@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.PasswordDbContext;
 using PasswordManager.Services;
@@ -17,6 +20,14 @@ public class Program
             => options.UseSqlite(builder.Configuration
             .GetConnectionString("PasswordDbString")));
 
+        builder.Services.AddDbContext<UsersDbContext>(options
+            => options.UseSqlite(builder.Configuration
+            .GetConnectionString("UserDbString")));
+
+        builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+        options.SignIn.RequireConfirmedAccount = false)
+        .AddEntityFrameworkStores<UsersDbContext>();
+
         builder.Services.AddScoped<IPasswordEntryServices, PasswordEntryService>();
 
         var app = builder.Build();
@@ -28,6 +39,7 @@ public class Program
         }
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapStaticAssets();
