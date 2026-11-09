@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.PasswordDbContext;
 using PasswordManager.Services;
@@ -27,6 +28,13 @@ public class Program
         builder.Services.AddDefaultIdentity<IdentityUser>(options =>
         options.SignIn.RequireConfirmedAccount = false)
         .AddEntityFrameworkStores<UsersDbContext>();
+
+        builder.Services.AddRazorPages(options =>
+        {
+            options.Conventions.AuthorizeFolder("/Password");
+        });
+
+        builder.Services.AddDataProtection();
 
         builder.Services.AddScoped<IPasswordEntryServices, PasswordEntryService>();
 
