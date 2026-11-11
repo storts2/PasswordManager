@@ -7,6 +7,8 @@ public interface IPasswordEntryServices
 {
     public List<PasswordEntry> GetAllPasswords();
 
+    public List<PasswordEntry> GetAllPasswordsByUserId(string id);
+
     public PasswordEntry GetPasswordEntryById(int id);
 
     public void DeletePasswordEntry(int id);

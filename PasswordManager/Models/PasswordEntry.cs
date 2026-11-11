@@ -9,6 +9,9 @@ public class PasswordEntry
     public int Id { get; set; }
 
     [Required]
+    public string? UserId { get; set; }
+
+    [Required]
     [StringLength(20, MinimumLength = 1)]
     public string? Company { get; set; }
 

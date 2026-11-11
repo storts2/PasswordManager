@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PasswordManager.Models;
@@ -8,10 +9,12 @@ namespace PasswordManager.Pages.Password;
 public class IndexModel : PageModel
 {
     private IPasswordEntryServices _passwordDatabase;
+    private readonly UserManager<IdentityUser> _userManger;
 
-    public IndexModel(IPasswordEntryServices passwordDatabase)
+    public IndexModel(IPasswordEntryServices passwordDatabase, UserManager<IdentityUser> userManager)
     {
         _passwordDatabase = passwordDatabase;
+        _userManger = userManager;
         Passwords = new List<PasswordEntry>();
     }
 
@@ -23,20 +26,28 @@ public class IndexModel : PageModel
     [BindProperty]
     public string? ConfirmPassword { get; set; }
 
+    public string? AuthenticatedUserId { get; set; }
+
     public string? Message { get; set; } = "No Password Selected to Edit";
 
     public void OnGet()
     {
-        Passwords = _passwordDatabase.GetAllPasswords();
+        AuthenticatedUserId = _userManger.GetUserId(User);
+
+        Passwords = _passwordDatabase.GetAllPasswordsByUserId(AuthenticatedUserId);
     }
 
     public void OnPostSet()
     {
-        Passwords = _passwordDatabase.GetAllPasswords();
+        AuthenticatedUserId = _userManger.GetUserId(User);
+
+        Passwords = _passwordDatabase.GetAllPasswordsByUserId(AuthenticatedUserId);
     }
 
     public void OnPostDelete()
     {
+        AuthenticatedUserId = _userManger.GetUserId(User);
+
         if (CurrentPassword is null)
         {
             Message = "Did not delete, password was not deleted";
@@ -48,18 +59,24 @@ public class IndexModel : PageModel
         }
 
         CurrentPassword = null;
-        Passwords = _passwordDatabase.GetAllPasswords();
+        Passwords = _passwordDatabase.GetAllPasswordsByUserId(AuthenticatedUserId);
     }
 
     public void OnPostChange()
     {
-        if(!ModelState.IsValid)
+        AuthenticatedUserId = _userManger.GetUserId(User);
+
+        if (!ModelState.IsValid)
         {
             Message = "Invalid password entry, password did not change";
         }
         else if(CurrentPassword is null || CurrentPassword.Password != ConfirmPassword)
         {
             Message = "Password's did not match, did not change password";
+        }
+        else if (CurrentPassword.UserId != AuthenticatedUserId)
+        {
+            Message = "Password not changed, you tryna hack me?";
         }
         else
         {
@@ -68,7 +85,7 @@ public class IndexModel : PageModel
         }
 
         CurrentPassword = null;
-        Passwords = _passwordDatabase.GetAllPasswords();
+        Passwords = _passwordDatabase.GetAllPasswordsByUserId(AuthenticatedUserId);
     }
 }
 

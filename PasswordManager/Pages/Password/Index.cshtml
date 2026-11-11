@@ -32,6 +32,8 @@
                                                    type="hidden" value="@p.Id" />
                                             <input asp-for="CurrentPassword.Company"
                                                    type="hidden" value="@p.Company" />
+                                            <input asp-for="CurrentPassword.UserId"
+                                                   type="hidden" value="@Model.AuthenticatedUserId" />
 
                                             <button type="submit"
                                                     class="btn btn-outline-success btn-sm">
@@ -83,6 +85,10 @@
 
                             <input value="@Model.CurrentPassword.Id"
                                    asp-for="CurrentPassword.Id"
+                                   type="hidden" />
+
+                            <input value="@Model.CurrentPassword.UserId"
+                                   asp-for="CurrentPassword.UserId"
                                    type="hidden" />
 
                             <button type="submit" class="btn btn-success w-100">

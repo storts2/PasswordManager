@@ -27,6 +27,18 @@ public class PasswordEntryService : IPasswordEntryServices
         return HashedPasswords;
     }
 
+    public List<PasswordEntry> GetAllPasswordsByUserId(string id)
+    {
+        List<PasswordEntry> HashedPasswords = _context.Passwords.Where(p => p.UserId == id).ToList();
+
+        foreach (PasswordEntry pWord in HashedPasswords)
+        {
+            pWord.Password = _protector.Unprotect(pWord.Password);
+        }
+
+        return HashedPasswords;
+    }
+
     public PasswordEntry GetPasswordEntryById(int id)
     {
         return _context.Passwords.Where(p => p.Id == id).FirstOrDefault();
