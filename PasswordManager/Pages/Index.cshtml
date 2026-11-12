@@ -1,8 +1,36 @@
 ﻿@page
 
 <div class="text-center py-5 d-flex flex-grow-1 flex-column justify-content-center align-items-center">
+
     <h1 class="display-5 fw-bold">Keep your passwords in one place</h1>
+
     <p class="lead text-secondary mx-auto mb-4" style="max-width: 36rem;">
         Save your logins, find them quickly, and keep them up to date.
     </p>
+
+    <div class="d-flex gap-3">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a class="btn btn-outline-danger px-4"
+                asp-area="Identity"
+                asp-page="/Account/Logout">
+                Logout
+            </a>
+        }
+        else
+        {
+            <a class="btn btn-success px-4"
+                asp-area="Identity"
+                asp-page="/Account/Register">
+                Register
+            </a>
+
+            <a class="btn btn-outline-dark px-4"
+                asp-area="Identity"
+                asp-page="/Account/Login">
+                Login
+            </a>
+        }
+    </div>
+
 </div>
